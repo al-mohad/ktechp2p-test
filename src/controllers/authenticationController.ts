@@ -1,5 +1,5 @@
 import express from "express";
-import { authentication, generateOTP, generateToken, random } from "../helpers";
+import { authentication, random } from "../helpers";
 import { validateLoginSchema, validateRegistrationSchema } from "../helpers/authHelpers";
 import { createUserInDB, getMongoUserByMobileNumber } from "../models/UserSchema";
 import { createNewWalletInMongdb, getMongodbWalletByUsername } from "../models/WalletSchema";
@@ -26,7 +26,6 @@ export const login = async (req: express.Request, res: express.Response) => {
         if (rawUser.authentication.password !== expectedHash)
             return res.status(400).json({ status: 'error', message: "Invalid credentials" });
 
-        const token = generateToken(rawUser._id, rawUser.username);
         await rawUser.save();
 
         // merge(req, { identity: rawUser })
@@ -34,7 +33,7 @@ export const login = async (req: express.Request, res: express.Response) => {
         let user = await getMongoUserByMobileNumber(mobileNumber)
         let wallet = await getMongodbWalletByUsername(rawUser.username)
 
-        return res.status(200).json({ "status": "success", "message": "sign in successfully", "payload": { token: token, user: user, wallet: wallet } })
+        return res.status(200).json({ "status": "success", "message": "sign in successfully", "payload": { user: user, wallet: wallet } })
     } catch (error) {
         console.log(`An error occured: ${error}`);
         return res.status(406).json({ "status": "error", "message": "backend " })
@@ -67,14 +66,9 @@ export const register = async (req: express.Request, res: express.Response) => {
 
         await createNewWalletInMongdb({ "uid": newUser._id, "username": newUser.username })
         let newWallet = await getMongodbWalletByUsername(newUser.username)
-        const token = generateToken(newUser._id, newUser.username);
-
-        const generatedOTP = generateOTP(); // Generate a 6-digit OTP
-
-
 
         return res.status(200)
-            .json({ "status": "success", "message": 'User registered successfully', payload: { token, user: newUser, wallet: newWallet } });
+            .json({ "status": "success", "message": 'User registered successfully', payload: { user: newUser, wallet: newWallet } });
     } catch (error) {
         console.log(error);
         return res.status(406).json({ "status": "success", "message": `backend: ${error}` });

@@ -9,17 +9,12 @@ import morgan from "morgan"
 import multer from 'multer'
 import path from "path"
 import router from "./router"
-import sendMail from "./utilities/mailer"
-// import swaggerDocs from "../src/utilities/swagger"
 
 
 
-import FirebaseController from "./controllers/firebaseController"
-import configureSocket from "./controllers/socketController"
 import { getUploadPath } from "./helpers/userHelpers"
 require('dotenv').config()
 
-const firebaseController = new FirebaseController();
 
 const app = express()
 // middlewares
@@ -67,7 +62,6 @@ const PORT = process.env.PORT || 3000
 const server = http.createServer(app)
 // const io = new Server(server);
 // Connect and export the io instance
-const io = configureSocket(server);
 
 mongoose.Promise = Promise
 mongoose.connect(process.env.MONGO_CONNECTION_STRING, {}).then(() => {
@@ -75,14 +69,8 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING, {}).then(() => {
     server.listen(PORT, async () => {
         console.error(`Server running on http://localhost:${PORT}`)
         // swaggerDocs(app, 3000);
-        await firebaseController.test()
 
-        await sendMail({
-            from: "test@example.com",
-            to: "gmbdairy@gmail.com",
-            subject: "Welcome on board to flash",
-            text: "This is a test from flash nodemailer"
-        });
+
     })
     // swaggerDocs(app, 3000)
 });
