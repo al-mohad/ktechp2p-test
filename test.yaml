@@ -1,0 +1,10 @@
+   /**
+     * @openapi
+     * '/playground':
+     *  get:
+     *   tags:
+     *    - Playground
+     *      responses:
+     *          200:
+     *            description: app is up
+     * */

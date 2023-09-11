@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "node",
+    "baseUrl": "src",
+    "outDir": "lib",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "resolveJsonModule": true,
+  },
+  "compileOnSave": true,
+  "include": [
+    "src/**/*"
+  ]
+}
+// {
+//   "compilerOptions": {
+//     "module": "commonjs",
+//     "noImplicitReturns": true,
+//     "noUnusedLocals": true,
+//     "outDir": "lib",
+//     "sourceMap": true,
+//     "strict": true,
+//     "target": "es2017",
+//     "resolveJsonModule": true,
+//     "skipLibCheck": true,
+//     "lib": ["es5", "es6", "dom", "dom.iterable"]
+//   },
+//   "compileOnSave": true,
+//   "include": ["src"]
+// }
